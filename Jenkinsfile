@@ -14,12 +14,13 @@ pipeline {
                     ls -la
                     node --version
                     npm --version
-                    npm ci --legacy-peer-deps
+                    npm ci
                     npm run build
                     ls -la
                 '''
             }
         }
+
         stage('Test') {
             agent {
                 docker {
@@ -27,11 +28,19 @@ pipeline {
                     reuseNode true
                 }
             }
+
             steps {
                 sh '''
+                    test -f build/index.html
                     npm test
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            junit 'test-results/junit.xml'
         }
     }
 }
