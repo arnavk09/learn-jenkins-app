@@ -81,6 +81,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo "Testing a git polling change"
                     npm install netlify-cli
                     node_modules/.bin/netlify deploy --dir=build --prod
                 '''
